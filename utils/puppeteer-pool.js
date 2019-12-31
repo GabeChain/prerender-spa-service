@@ -20,8 +20,8 @@ const genericPool = require('generic-pool')
 const initPuppeteerPool = (options = {}) => {
   const {
     max = 10,
-    min = 2,
-    maxUses = 2048,
+    min = 1,
+    maxUses = 1024,
     testOnBorrow = true,
     autostart = false,
     idleTimeoutMillis = 3600000,

@@ -58,13 +58,24 @@ class puppeteerService extends Service {
       req.continue()
     })
 
-    await page.goto(url, {waitUntil: 'load'})
-    await page.waitFor(500)
+    await page.goto(url)
+    // await page.evaluate(() => {
+    //   window.onbeforeunload = function(e) {
+    //     console.log('onbeforeunload')
+    //     return 'stop navigating'
+    //   }
+    //   history.pushState(null, null, document.URL)
+    //   window.addEventListener('popstate', () => {
+    //     console.log('popstate')
+    //     history.pushState(null, null, document.URL)
+    //   })
+    // })
+    // await page.on('dialog', (dialog)=>{
+    //   dialog.dismiss()
+    // })
+    await page.waitFor(500, {waitUntil: 'load'})
 
     await page.evaluate(() => {
-      window.onbeforeunload = function(event) {
-        return 'stop navigating'
-      }
       if (!document.querySelector('html').dataset.render) { return }
       // 删除动态添加的一级标签
       for (let i = 0; i < document.querySelector('head').childNodes.length; i++) {

@@ -20,14 +20,9 @@ class AppBootHook {
     this.app.pool = initPuppeteerPool({
       puppeteerArgs: {
         ignoreHTTPSErrors: true,
-        headless: true, // 是否启用无头模式页面
+        headless: false, // 是否启用无头模式页面
         timeout: 0,
         pipe: true, // 不使用 websocket 
-        args: ['--ignore-certificate-errors',
-          '--allow-running-insecure-content',
-          '--disable-xss-auditor',
-          '--no-sandbox',
-          '--disable-setuid-sandbox']
       }
     })
   }
