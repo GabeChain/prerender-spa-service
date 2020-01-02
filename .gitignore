@@ -7,8 +7,8 @@ yarn.lock
 coverage/
 .idea/
 run/
-__MACOSX/
 .DS_Store
 *.sw*
 *.un~
-#.vscode/
+typings/
+.nyc_output/

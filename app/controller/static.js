@@ -15,7 +15,7 @@ class StaticController extends Controller {
   async render() {
     const {ctx, service, config} = this
     const url = decodeURIComponent(ctx.query.url)
-    const pageObj = url ? await service.puppeteerService.renderPage(`http://${config.cluster.listen.hostname}:${config.cluster.listen.port}/markStatic?url=${encodeURIComponent(url)}`) : null
+    const pageObj = url ? await service.puppeteerService.renderPage(`http://127.0.0.1:${config.cluster.listen.port}/markStatic?url=${encodeURIComponent(url)}`) : null
     ctx.status = 200
     ctx.body = pageObj.html
   }
@@ -23,7 +23,7 @@ class StaticController extends Controller {
   async download() {
     const {ctx, service, config, app} = this
     const url = decodeURIComponent(ctx.query.url)
-    const pageObj = url ? await service.puppeteerService.renderPage(`http://${config.cluster.listen.hostname}:${config.cluster.listen.port}/markStatic?url=${encodeURIComponent(url)}`) : null
+    const pageObj = url ? await service.puppeteerService.renderPage(`http://127.0.0.1:${config.cluster.listen.port}/markStatic?url=${encodeURIComponent(url)}`) : null
     const htmlId = shortid.generate()
     let htmlPath = path.resolve(app.config.template.dir, `${htmlId}.html`)
     // 写入html文件

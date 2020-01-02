@@ -1,15 +1,12 @@
-const Controller = require('egg').Controller
+'use strict';
+
+const Controller = require('egg').Controller;
 
 class HomeController extends Controller {
   async index() {
-    const title = {
-      name: 'Egg-go',
-      content: '链链前端 node API基础库，基于Egg.js，用于快速集成开发BFF端。'
-    }
-    await this.ctx.render('index/index',{
-      title: title
-    })
+    const { ctx } = this;
+    ctx.body = 'hi, egg';
   }
 }
 
-module.exports = HomeController
+module.exports = HomeController;
