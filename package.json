@@ -4,6 +4,7 @@
   "description": "",
   "private": true,
   "egg": {
+    "typescript": true,
     "declarations": true
   },
   "dependencies": {
@@ -23,7 +24,8 @@
     "egg-ci": "^1.11.0",
     "egg-mock": "^3.21.0",
     "eslint": "^5.13.0",
-    "eslint-config-egg": "^7.1.0"
+    "eslint-config-egg": "^7.1.0",
+    "typescript": "^3.7.4"
   },
   "engines": {
     "node": ">=10.0.0"
@@ -36,9 +38,11 @@
     "test": "npm run lint -- --fix && npm run test-local",
     "test-local": "egg-bin test",
     "cov": "egg-bin cov",
+    "tsc": "ets && tsc -p tsconfig.json",
+    "ci": "npm run lint && npm run cov && npm run tsc",
+    "autod": "autod",
     "lint": "eslint .",
-    "ci": "npm run lint && npm run cov",
-    "autod": "autod"
+    "clean": "ets clean"
   },
   "ci": {
     "version": "10"
@@ -47,6 +51,9 @@
     "type": "git",
     "url": ""
   },
+  "eslintIgnore": [
+    "coverage"
+  ],
   "author": "chennmingyu",
   "license": "MIT"
 }

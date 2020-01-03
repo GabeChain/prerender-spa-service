@@ -1,6 +1,6 @@
-'use strict'
-const puppeteer = require('puppeteer')
-const genericPool = require('generic-pool')
+'use strict';
+const puppeteer = require('puppeteer');
+const genericPool = require('generic-pool');
 
 /**
  * 初始化一个 Puppeteer 池
@@ -29,23 +29,23 @@ const initPuppeteerPool = (options = {}) => {
     puppeteerArgs = {},
     validator = () => Promise.resolve(true),
     ...otherConfig
-  } = options
+  } = options;
 
   const factory = {
     create: () =>
       puppeteer.launch(puppeteerArgs).then(instance => {
         // 创建一个 puppeteer 实例 ，并且初始化使用次数为 0
-        instance.useCount = 0
-        return instance
+        instance.useCount = 0;
+        return instance;
       }),
     destroy: instance => {
-      instance.close()
+      instance.close();
     },
     validate: instance => {
       // 执行一次自定义校验，并且校验校验 实例已使用次数。 当 返回 reject 时 表示实例不可用
-      return validator(instance).then(valid => Promise.resolve(valid && (maxUses <= 0 || instance.useCount < maxUses)))
-    }
-  }
+      return validator(instance).then(valid => Promise.resolve(valid && (maxUses <= 0 || instance.useCount < maxUses)));
+    },
+  };
   const config = {
     max,
     min,
@@ -53,38 +53,38 @@ const initPuppeteerPool = (options = {}) => {
     autostart,
     idleTimeoutMillis,
     evictionRunIntervalMillis,
-    ...otherConfig
-  }
-  const pool = genericPool.createPool(factory, config)
-  const genericAcquire = pool.acquire.bind(pool)
+    ...otherConfig,
+  };
+  const pool = genericPool.createPool(factory, config);
+  const genericAcquire = pool.acquire.bind(pool);
   // 重写了原有池的消费实例的方法。添加一个实例使用次数的增加
   pool.acquire = () =>
     genericAcquire().then(instance => {
-      instance.useCount += 1
-      return instance
-    })
+      instance.useCount += 1;
+      return instance;
+    });
   pool.use = async fn => {
-    let resource
+    let resource;
     return pool
       .acquire()
       .then(r => {
-        resource = r
-        return resource
+        resource = r;
+        return resource;
       })
       .then(fn)
       .then(
         result => {
           // 不管业务方使用实例成功与后都表示一下实例消费完成
-          pool.release(resource)
-          return result
+          pool.release(resource);
+          return result;
         },
         err => {
-          pool.release(resource)
-          throw err
+          pool.release(resource);
+          throw err;
         }
-      )
-  }
-  return pool
-}
+      );
+  };
+  return pool;
+};
 
-module.exports = initPuppeteerPool
+module.exports = initPuppeteerPool;

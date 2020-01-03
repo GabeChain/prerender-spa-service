@@ -1,11 +1,12 @@
-const initPuppeteerPool = require('./utils/puppeteer-pool.js')
-const { EventEmitter } = require('events')
-EventEmitter.defaultMaxListeners = 30
+'use strict';
+const initPuppeteerPool = require('./utils/puppeteer-pool.js');
+const { EventEmitter } = require('events');
+EventEmitter.defaultMaxListeners = 30;
 class AppBootHook {
   constructor(app) {
-    this.app = app
+    this.app = app;
   }
-  //以下为egg的生命周期
+  // 以下为egg的生命周期
   configWillLoad() {
     // 此时 config 文件已经被读取并合并，但是还并未生效
     // 这是应用层修改配置的最后时机
@@ -28,10 +29,10 @@ class AppBootHook {
           '--disable-setuid-sandbox',
           '--disabled-gpu',
           '--zygote',
-          '--single-process'
-        ]
-      }
-    })
+          '--single-process',
+        ],
+      },
+    });
   }
 
   async willReady() {
@@ -43,19 +44,19 @@ class AppBootHook {
     // 应用已经启动完毕
   }
 
-  async beforeStart(){
+  async beforeStart() {
     // await this.app.runSchedule('timeTask')
+  }
+
+  async serverDidReady() {
+    // Server is listening.
   }
 
   async beforeClose() {
     // 释放puppeteer实例池
     if (this.app.pool.drain) {
-      await this.app.pool.drain().then(() => this.app.pool.clear())
+      await this.app.pool.drain().then(() => this.app.pool.clear());
     }
   }
-  
-  async serverDidReady() {
-    
-  }
 }
-module.exports = AppBootHook
+module.exports = AppBootHook;
