@@ -29,7 +29,6 @@ class AppBootHook {
           '--disable-setuid-sandbox',
           '--disabled-gpu',
           '--zygote',
-          '--single-process',
         ],
       },
     });

@@ -4,10 +4,10 @@ export default (app: Application) => {
   const { router, controller } = app;
   //URL地址HTML静态化标记proxy
   router.get('/markStatic', controller.static.mark)
-  //URL地址静态化
+  //URL地址预渲染服务
   router.get('/renderStatic', controller.static.render)
-  //URL静态化下载
+  //URL预渲染化html下载
   router.get('/downloadStatic', controller.static.download)
-  //URL地址静态化
+  //URL离线html渲染
   router.get('/renderOffLine', controller.static.renderOffLine)
 };

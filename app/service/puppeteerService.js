@@ -43,7 +43,7 @@ class puppeteerService extends Service {
   async renderPage(url) {
     const { app } = this;
 
-    // 在业务中取出实例使用
+    // 取出app初始化puppeteer实例使用
     const page = await app.pool.use(async instance => {
       return await instance.newPage();
     });
@@ -59,8 +59,9 @@ class puppeteerService extends Service {
       // 3. 其它请求正常继续
       req.continue();
     });
-
     await page.goto(url);
+
+    // 阻断页面进入后跳转
     // await page.evaluate(() => {
     //   window.onbeforeunload = function(e) {
     //     console.log('onbeforeunload');
@@ -77,6 +78,7 @@ class puppeteerService extends Service {
     // });
     await page.waitFor(500, { waitUntil: 'load' });
 
+    // 通过动态行为标记剔除标签、dom
     await page.evaluate(() => {
       if (!document.querySelector('html').dataset.render) { return; }
       // 删除动态添加的一级标签
@@ -97,8 +99,9 @@ class puppeteerService extends Service {
       // 为JS动态渲染的二级dom添加标记
       [].forEach.call(document.querySelector('body').childNodes, node => {
         if (node.nodeType === 1) {
-          // vue.js ssr渲染标记 全打上
+          // vue.js ssr渲染标记 全不放过
           node.setAttribute('data-server-rendered', 'true');
+
           node.dataset.render !== 'static' ? node.dataset.render = 'hydration' : null;
           [].forEach.call(node.childNodes, node => {
             if (node.nodeType === 1) {
@@ -149,14 +152,14 @@ class puppeteerService extends Service {
   async offlinePage(url) {
     const { app } = this;
 
-    // 在业务中取出实例使用
+    // 取出app初始化puppeteer实例使用
     const page = await app.pool.use(async instance => {
       return await instance.newPage();
     });
 
-    await page.goto(url, { waitUntil: 'load' });
+    await page.goto(url);
     await page.waitForFunction('window.innerHeight > 100');
-    await page.waitFor(500);
+    await page.waitFor(500, { waitUntil: 'load' });
 
     const session = await page.target().createCDPSession();
     await session.send('Page.enable');
