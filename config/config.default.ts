@@ -21,8 +21,8 @@ export default (appInfo: EggAppInfo) => {
       version: '1.0.0',
     },
     schemes: ['http', 'https'],
-    consumes: ['application/json'],
-    produces: ['application/json'],
+    consumes: ['application/json', 'text/html'],
+    produces: ['application/json', 'text/html'],
     securityDefinitions: {
       // apikey: {
       //   type: 'apiKey',
@@ -51,7 +51,7 @@ export default (appInfo: EggAppInfo) => {
   config.cluster = {
     listen: {
       port: 7011,
-      // hostname: '0.0.0.0',
+      hostname: '0.0.0.0',
     }
   }
 

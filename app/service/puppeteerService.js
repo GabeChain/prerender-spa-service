@@ -115,9 +115,8 @@ class puppeteerService extends Service {
       rmReHydScript.dataset.render = 'hydration';
       rmReHydScript.text = `
         if (!/HeadlessChrome/.test(window.navigator.userAgent)) {
-          window.onload = () => {
-    
-            window.onload && window.onload()
+          document.addEventListener('DOMContentLoaded', function() {
+            
             for (let i = 0; i < document.querySelector('body').childNodes.length; i++) {
               let node = document.querySelector('body').childNodes[i]
               if (node.nodeType === 1 && node.dataset.render === 'hydration') {
@@ -133,8 +132,8 @@ class puppeteerService extends Service {
                 }
               }
             }
-            
-          }
+
+          });
         }
       `;
       document.querySelector('body').appendChild(rmReHydScript);

@@ -25,10 +25,13 @@ class AppBootHook {
         timeout: 0,
         pipe: true, // 不使用 websocket
         args: [
-          '--no-sandbox',
+          '--disable-gpu',
+          '--disable-dev-shm-usage',
           '--disable-setuid-sandbox',
-          '--disabled-gpu',
-          '--zygote',
+          '--disable-accelerated-2d-canvas',
+          '--no-first-run',
+          '--no-sandbox',
+          '--no-zygote',
         ],
       },
     });
